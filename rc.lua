@@ -36,7 +36,13 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 dofile(awful.util.getdir("config") .. "/autostart.lua")
-dofile(awful.util.getdir("config") .. "/screen.lua")
+
+--dofile(awful.util.getdir("config") .. "/screen.lua")
+
+local myscreen = require("myscreen")
+myscreen.init()
+local layouts = myscreen.layouts
+
 dofile(awful.util.getdir("config") .. "/menu.lua")
 dofile(awful.util.getdir("config") .. "/mywibox.lua")
 dofile(awful.util.getdir("config") .. "/keys.lua")
