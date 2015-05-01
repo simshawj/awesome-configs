@@ -71,7 +71,9 @@ globalkeys = awful.util.table.join(
     awful.key({"Control", "Alt"},    "t",      function () awful.util.spawn(terminal)    end),
 
     -- MyKeys
-    awful.key({ modkey},             "l",      function () awful.util.spawn("dm-tool lock") end), 
+    awful.key({ modkey },            "l",      function () awful.util.spawn("dm-tool lock") end),
+    awful.key({ }, "XF86MonBrightnessUp",    function () awful.util.spawn("xbacklight +5") end),
+    awful.key({ }, "XF86MonBrightnessDown",  function () awful.util.spawn("xbacklight -5") end),
 
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end)
