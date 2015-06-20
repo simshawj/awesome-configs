@@ -1,6 +1,7 @@
 local awful = require("awful")
 
 modkey = "Mod4"
+lock = "i3lock -i " .. os.getenv("HOME") .. "/.wallpapers/lock"
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
@@ -43,12 +44,9 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    --awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    --awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
     awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
@@ -58,20 +56,10 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
-    -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
-
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end),
-    awful.key({"Control", "Alt"},    "t",      function () awful.util.spawn(terminal)    end),
-
     -- MyKeys
-    awful.key({ modkey },            "l",      function () awful.util.spawn("dm-tool lock") end),
+    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end), --opens menu(currently awesome's)
+    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey },            "l",      function () awful.util.spawn(lock) end),
     awful.key({ }, "XF86MonBrightnessUp",    function () awful.util.spawn("xbacklight +5") end),
     awful.key({ }, "XF86MonBrightnessDown",  function () awful.util.spawn("xbacklight -5") end),
 
@@ -99,9 +87,6 @@ clientkeys = awful.util.table.join(
         end)
 )
 
--- Bind all key numbers to tags.
--- Be careful: we use keycodes to make it works on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, 9 do
     globalkeys = awful.util.table.join(globalkeys,
         -- View tag only.
@@ -113,15 +98,6 @@ for i = 1, 9 do
                            awful.tag.viewonly(tag)
                         end
                   end),
-        -- Toggle tag.
-        awful.key({ modkey, "Control" }, "#" .. i + 9,
-                  function ()
-                      local screen = mouse.screen
-                      local tag = awful.tag.gettags(screen)[i]
-                      if tag then
-                         awful.tag.viewtoggle(tag)
-                      end
-                  end),
         -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
@@ -131,16 +107,6 @@ for i = 1, 9 do
                               awful.client.movetotag(tag)
                           end
                      end
-                  end),
-        -- Toggle tag.
-        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-                  function ()
-                      if client.focus then
-                          local tag = awful.tag.gettags(client.focus.screen)[i]
-                          if tag then
-                              awful.client.toggletag(tag)
-                          end
-                      end
                   end))
 end
 
